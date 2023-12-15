@@ -1,5 +1,4 @@
 langid
 torchtext==0.16.0
 pytorch
-torchtext
 flask
