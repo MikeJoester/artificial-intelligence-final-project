@@ -1,5 +1,5 @@
 langid
 torchtext==0.16.0
-pytorch
+torch
 flask
 streamlit
