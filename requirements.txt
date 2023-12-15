@@ -3,4 +3,5 @@ torchtext==0.16.0
 torch
 flask
 streamlit
+waitress
 gunicorn
