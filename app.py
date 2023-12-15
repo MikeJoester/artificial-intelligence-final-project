@@ -30,4 +30,4 @@ def predict_endpoint():
     return jsonify({'prediction': int(prediction)})
 
 if __name__ == '__main__':
-    app.run(port=9999)
+    app.run(port=3290)
