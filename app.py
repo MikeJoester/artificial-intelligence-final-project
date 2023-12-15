@@ -1,33 +1,37 @@
 from flask import Flask, request, jsonify
-from model import TextClassificationModel, preprocess_text, predict
 import torch
+from torchtext.vocab import Vocab
+from text_classification import TextClassificationModel
+from torchtext.data.utils import get_tokenizer
+# Replace with the actual script name
 
 app = Flask(__name__)
 
-# Load the trained model
-model_path = "./trained_model.pth"
-vocab_size = 10000  # Update with the correct value
-embed_dim = 100  # Update with the correct value
-num_class = 2  # Update with the correct value
+# Load Vocabulary
+vocabulary = torch.load("vocabulary.pth")
+vocabulary.set_default_index(vocabulary["<unk>"])
 
-loaded_model = TextClassificationModel(vocab_size, embed_dim, num_class)
-loaded_model.load_state_dict(torch.load(model_path))
-loaded_model.eval()
+# Load Model
+num_class = 2
+model = TextClassificationModel(len(vocabulary), 100, num_class)  # Adjust the parameters accordingly
+model.load_state_dict(torch.load("trained_model.pth", map_location=torch.device('cpu')))
+model.eval()
 
-# Define an endpoint for prediction
+# Tokenizer
+tokenizer = get_tokenizer("basic_english")
+
+def predict(text):
+    with torch.no_grad():
+        encoded = torch.tensor(vocabulary(tokenizer(text)))
+        output = model(encoded, torch.tensor([0]))
+    return output.argmax(1).item()
+
 @app.route('/predict', methods=['POST'])
 def predict_endpoint():
-    data = request.get_json(force=True)
+    data = request.json
     text = data['text']
-
-    # Perform preprocessing if needed
-    preprocessed_text = preprocess_text(text)
-
-    # Make a prediction using the loaded model
-    prediction = predict(preprocessed_text)
-
-    # Return the prediction as JSON
-    return jsonify({'prediction': int(prediction)})
+    prediction = predict(text)
+    return jsonify({"prediction": prediction})
 
 if __name__ == '__main__':
-    app.run(port=3290)
+    app.run(debug=True)
