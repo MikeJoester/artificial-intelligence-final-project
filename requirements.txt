@@ -2,3 +2,4 @@ langid
 torchtext==0.16.0
 pytorch
 flask
+streamlit
