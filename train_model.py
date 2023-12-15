@@ -108,6 +108,8 @@ vocabulary = build_vocab_from_iterator(
 
 vocabulary.set_default_index(vocabulary["<unk>"])
 
+torch.save(vocabulary, "vocabulary.pth")
+
 # convert iter into torchtext dataset
 def prepare_dataset (df):
     for index, row in df.iterrows():
@@ -259,7 +261,6 @@ for epoch in range(1, num_epochs +1):
     )
     print ("-" * 59)
     # Save the model after each epoch
-    torch.save(model.state_dict(), f"trained_model_epoch_{epoch}.pth")
     
 def predict ( text ):
     with torch.no_grad():
