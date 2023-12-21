@@ -3,9 +3,10 @@ import torch
 from torchtext.vocab import Vocab
 from text_classification import TextClassificationModel
 from torchtext.data.utils import get_tokenizer
-# Replace with the actual script name
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Load Vocabulary
 vocabulary = torch.load("vocabulary.pth")
@@ -13,7 +14,7 @@ vocabulary.set_default_index(vocabulary["<unk>"])
 
 # Load Model
 num_class = 2
-model = TextClassificationModel(len(vocabulary), 100, num_class)  # Adjust the parameters accordingly
+model = TextClassificationModel(len(vocabulary), 100, num_class)
 model.load_state_dict(torch.load("trained_model.pth", map_location=torch.device('cpu')))
 model.eval()
 
@@ -34,5 +35,6 @@ def predict_endpoint():
     return jsonify({"prediction": prediction})
     
 if __name__ == "__main__":
-    from waitress import serve
-    serve(app, host="0.0.0.0", port=3299)
+    app.run(debug=True)
+    # from waitress import serve
+    # serve(app, host="0.0.0.0", port=3299)

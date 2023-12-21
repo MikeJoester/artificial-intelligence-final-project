@@ -4,3 +4,4 @@ torch
 flask
 streamlit
 waitress
+flask_cors

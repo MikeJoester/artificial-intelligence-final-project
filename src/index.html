@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phân Tích Bình Luận</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Phân Tích Bình Luận</h1>
+        <input type="file" id="csvFileInput" accept=".csv">
+        <button id="analyzeButton" class="btn">Phân tích</button>
+        <div id="resultsSummary">
+            <p>Số Bình Luận Tích Cực: <span id="positiveCount">0</span></p>
+            <p>Số Bình Luận Tiêu Cực: <span id="negativeCount">0</span></p>
+        </div>
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <th>Bình luận</th>
+                    <th>Đánh giá</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
